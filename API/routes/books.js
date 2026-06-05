@@ -16,7 +16,6 @@ router.get('/', async (req, res) => {
 });
 
 // Get book by ID
-
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -36,7 +35,6 @@ router.get('/:id', async (req, res) => {
 });
 
 // Create book
-
 router.post('/', async (req, res) => {
     const { title, isbn, publication_year, publisher_id } = req.body;
     try {
@@ -54,7 +52,6 @@ router.post('/', async (req, res) => {
 });
 
 // Update book
-
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
     const { title, isbn, publication_year, publisher_id } = req.body;
@@ -82,7 +79,6 @@ router.put('/:id', async (req, res) => {
 });
 
 // Delete book
-
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
     try {
