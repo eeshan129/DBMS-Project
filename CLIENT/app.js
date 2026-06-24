@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://dbms-library-api.onrender.com/api';
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
