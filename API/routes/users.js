@@ -1,9 +1,54 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../db');
-router.get('/', async (req, res) => { try { res.json((await pool.query('SELECT user_id,full_name,email,phone,address,date_of_birth,created_at,is_active FROM users ORDER BY user_id')).rows); } catch (err) { res.status(500).json({ error: err.message }); } });
-router.get('/:id', async (req, res) => { try { const r = await pool.query('SELECT user_id,full_name,email,phone,address,date_of_birth,created_at,is_active FROM users WHERE user_id=$1', [req.params.id]); if (!r.rows.length) return res.status(404).json({ error: 'Not found' }); res.json(r.rows[0]); } catch (err) { res.status(500).json({ error: err.message }); } });
-router.post('/', async (req, res) => { const { full_name, email, password_hash, phone, address, date_of_birth } = req.body; try { const r = await pool.query('INSERT INTO users (full_name,email,password_hash,phone,address,date_of_birth) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *', [full_name, email, password_hash, phone, address, date_of_birth]); res.status(201).json(r.rows[0]); } catch (err) { res.status(500).json({ error: err.message }); } });
-router.put('/:id', async (req, res) => { const { full_name, email, phone, address, date_of_birth, is_active } = req.body; try { const r = await pool.query('UPDATE users SET full_name=$1,email=$2,phone=$3,address=$4,date_of_birth=$5,is_active=$6 WHERE user_id=$7 RETURNING *', [full_name, email, phone, address, date_of_birth, is_active, req.params.id]); if (!r.rows.length) return res.status(404).json({ error: 'Not found' }); res.json(r.rows[0]); } catch (err) { res.status(500).json({ error: err.message }); } });
-router.delete('/:id', async (req, res) => { try { const r = await pool.query('DELETE FROM users WHERE user_id=$1 RETURNING *', [req.params.id]); if (!r.rows.length) return res.status(404).json({ error: 'Not found' }); res.json({ message: 'Deleted', deleted: r.rows[0] }); } catch (err) { res.status(500).json({ error: err.message }); } });
+
+router.get('/', async (req, res) => {
+  try {
+    res.json((await pool.query('SELECT user_id,full_name,email,phone,address,date_of_birth,created_at,is_active FROM users ORDER BY user_id')).rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.get('/:id', async (req, res) => {
+  try {
+    const r = await pool.query('SELECT user_id,full_name,email,phone,address,date_of_birth,created_at,is_active FROM users WHERE user_id=$1', [req.params.id]);
+    if (!r.rows.length) return res.status(404).json({ error: 'Not found' });
+    res.json(r.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.post('/', async (req, res) => {
+  const { full_name, email, password_hash, phone, address, date_of_birth } = req.body;
+  try {
+    const r = await pool.query('INSERT INTO users (full_name,email,password_hash,phone,address,date_of_birth) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *', [full_name, email, password_hash, phone, address, date_of_birth]);
+    res.status(201).json(r.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.put('/:id', async (req, res) => {
+  const { full_name, email, phone, address, date_of_birth, is_active } = req.body;
+  try {
+    const r = await pool.query('UPDATE users SET full_name=$1,email=$2,phone=$3,address=$4,date_of_birth=$5,is_active=$6 WHERE user_id=$7 RETURNING *', [full_name, email, phone, address, date_of_birth, is_active, req.params.id]);
+    if (!r.rows.length) return res.status(404).json({ error: 'Not found' });
+    res.json(r.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.delete('/:id', async (req, res) => {
+  try {
+    const r = await pool.query('DELETE FROM users WHERE user_id=$1 RETURNING *', [req.params.id]);
+    if (!r.rows.length) return res.status(404).json({ error: 'Not found' });
+    res.json({ message: 'Deleted', deleted: r.rows[0] });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;
