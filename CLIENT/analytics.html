@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - Library Management System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .analytics-container {
+            padding: 20px 0;
+        }
+        .chart-wrapper {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .chart-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        #booksDistributionChart, #borrowingStatusChart,
+        #finesAnalysisChart, #userActivityChart,
+        #genreDistributionChart, #finesByStatusChart {
+            max-height: 400px;
+        }
+        .page-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 40px;
+        }
+        .page-header h1 {
+            font-size: 32px;
+            font-weight: 700;
+        }
+        .nav-link.active {
+            color: white !important;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="index.html"><i class="fas fa-book"></i> Library Management</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html#dashboard">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#books">Books</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#users">Users</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#borrowing">Borrowing</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="analytics.html">Analytics</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container-fluid">
+            <h1><i class="fas fa-chart-bar"></i> Analytics & Reports</h1>
+            <p class="lead">Visualize library statistics with comprehensive charts and graphs</p>
+        </div>
+    </div>
+
+    <div class="container-fluid analytics-container">
+        <!-- Summary Stats -->
+        <div class="row mb-5">
+            <div class="col-md-12">
+                <h3 class="mb-4"><i class="fas fa-th-large"></i> Summary Statistics</h3>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-left-primary">
+                    <div class="card-body">
+                        <h6 class="card-title text-primary">Total Books</h6>
+                        <p class="display-6" id="totalBooks">-</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-left-success">
+                    <div class="card-body">
+                        <h6 class="card-title text-success">Total Users</h6>
+                        <p class="display-6" id="totalUsers">-</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-left-warning">
+                    <div class="card-body">
+                        <h6 class="card-title text-warning">Active Borrowings</h6>
+                        <p class="display-6" id="activeBorrowings">-</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-left-danger">
+                    <div class="card-body">
+                        <h6 class="card-title text-danger">Pending Fines</h6>
+                        <p class="display-6" id="pendingFines">-</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="mb-4"><i class="fas fa-chart-pie"></i> Detailed Analytics</h3>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Books Distribution by Category -->
+            <div class="col-lg-6">
+                <div class="chart-wrapper">
+                    <canvas id="booksDistributionChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Borrowing Status -->
+            <div class="col-lg-6">
+                <div class="chart-wrapper">
+                    <canvas id="borrowingStatusChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Fines Analysis -->
+            <div class="col-lg-6">
+                <div class="chart-wrapper">
+                    <canvas id="finesAnalysisChart"></canvas>
+                </div>
+            </div>
+
+            <!-- User Activity -->
+            <div class="col-lg-6">
+                <div class="chart-wrapper">
+                    <canvas id="userActivityChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Genre Distribution -->
+            <div class="col-lg-12">
+                <div class="chart-wrapper">
+                    <canvas id="genreDistributionChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Fines by Amount Range -->
+            <div class="col-lg-12">
+                <div class="chart-wrapper">
+                    <canvas id="finesByStatusChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white text-center py-4 mt-5">
+        <p>&copy; 2024 Library Management System. All rights reserved.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="analytics.js"></script>
+</body>
+</html>
